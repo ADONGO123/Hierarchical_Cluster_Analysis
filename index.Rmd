@@ -254,7 +254,7 @@ In this report, we will only look at continuous variables from the  **FitBit Fit
 
 **Dissimilarity Matrix**
 
-We start by defining a matrix of dissimilarity using the eucledian distance. As the variables have different magnitude of measurement, we will carry a z score standardization. 
+We start by defining a matrix of dissimilarity using the eucledian distance. As the variables have different magnitude of measurement, we will carry a z-score standardization. 
 
 ```{r, 2}
 # Summary Statistics
@@ -282,7 +282,7 @@ cluster_agg_average <- agnes(x = D_matrix, method = "average")
 
 **Average Linkage Method**
 
-We represent the results of the agglomerative clustering using the single linkage method by extracting the merging stages and corresponding distances from the `cluster_agg_average` object. Specifically, we combine the `merge` matrix and the `height` vector into a single data frame.
+We represent the results of the agglomerative clustering using the average linkage method by extracting the merging stages and corresponding distances from the `cluster_agg_average` object. Specifically, we combine the `merge` matrix and the `height` vector into a single data frame.
 
 ```{r}
 coefficients_agg_average <- cluster_agg_average$height
@@ -307,9 +307,9 @@ average_dendo <- fviz_dend(cluster_agg_average,k = 2,
                           
 average_dendo
 ```
-To reinforce the analysis, we will study the dendogram above. The dendrogram shows clear groupings among the 940 individuals based on their activity levels. Most individuals are merged at low heights, indicating many users share similar fitness behaviors. A large vertical jump near the top suggests the presence of 2–3 distinct clusters, possibly reflecting differences between highly active, moderately active, and sedentary users. The use of average linkage ensures these clusters are formed based on overall similarity rather than extremes.
+To reinforce the analysis, we will study the dendrogram above. The dendrogram shows clear groupings among the 940 individuals based on their activity levels. Most individuals are merged at low heights, indicating many users share similar fitness behaviors. A large vertical jump near the top suggests the presence of 2–3 distinct clusters, possibly reflecting differences between highly active, moderately active, and sedentary users. The use of average linkage ensures these clusters are formed based on overall similarity rather than extremes.
 
-Next, we will do a Silhouette Analysis to see the approapriate number of  clusters to use further for our analysis. This evaluates how similar each object is to its own cluster compared to other clusters. A higher average silhouette width indicates better-defined clusters. We will use the `silhouette()` function in the `cluster` package to do this
+Next, we will do a Silhouette Analysis to see the appropriate number of  clusters to use further for our analysis. This evaluates how similar each object is to its own cluster compared to other clusters. A higher average silhouette width indicates better-defined clusters. We will use the `silhouette()` function in the `cluster` package to do this
 
 ```{r}
 sil_widths <- sapply(2:10, function(k){
@@ -330,7 +330,7 @@ After selecting a solution with two clusters, the `cutree()` function in R can b
 dailyActivity["H_cluster"] <- cutree(tree = cluster_agg_average, k = 2)
 table(dailyActivity$H_cluster)
 ```
-At this stage, the hierarchical agglomerative clustering process can be viewed as complete. However, by creating a new variable such as `H_cluster`, the we can go further by applying a one-way ANOVA test. This allows for the examination of whether a specific variable shows significant differences across the formed clusters—essentially testing whether the variation between clusters is greater than the variation within them.
+At this stage, the hierarchical agglomerative clustering process can be viewed as complete. However, by creating a new variable such as `H_cluster`, we can go further by applying a one-way ANOVA test. This allows for the examination of whether a specific variable shows significant differences across the formed clusters—essentially testing whether the variation between clusters is greater than the variation within them.
 
 ```{r}
 #Total steps
